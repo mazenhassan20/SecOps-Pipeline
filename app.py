@@ -3,7 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-GITHUB_PERSONAL_TOKEN = "ghp_1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+GITHUB_PERSONAL_TOKEN = "ghp_18weufuer6efdjdffjkdhyttgdhguZ"
 
 def init_db():
     conn = sqlite3.connect('users.db')
