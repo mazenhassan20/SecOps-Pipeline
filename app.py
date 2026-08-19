@@ -3,17 +3,27 @@ import sqlite3
 
 app = Flask(__name__)
 
-AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
-DB_PASSWORD = "supersecretpassword123!"
+GITHUB_PERSONAL_TOKEN = "ghp_1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+def init_db():
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS users (username TEXT, role TEXT)")
+    cursor.execute("INSERT INTO users VALUES ('admin', 'superuser')")
+    conn.commit()
+    conn.close()
 
 @app.route('/user')
 def get_user():
-    username = request.args.get('username')
+    username = request.args.get('username', '')
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
-    query = "SELECT * FROM users WHERE username = '" + username + "'"
+    query = f"SELECT * FROM users WHERE username = '{username}'"
     cursor.execute(query)
-    return str(cursor.fetchall())
+    result = cursor.fetchall()
+    conn.close()
+    return str(result)
 
 if __name__ == '__main__':
+    init_db()
     app.run(host='0.0.0.0', port=5000)
